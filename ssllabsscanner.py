@@ -5,7 +5,7 @@ import time
 import sys
 import logging
 
-API = 'https://api.ssllabs.com/api/v2/'
+API = 'https://api.ssllabs.com/api/v3/'
 
 
 def requestAPI(path, payload={}):
