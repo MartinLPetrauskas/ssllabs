@@ -8,7 +8,7 @@ import logging
 API = 'https://api.ssllabs.com/api/v3/'
 
 
-def requestAPI(path, payload={}):
+def requestAPI(path, payload=None):
     """
     This is a helper function that takes the path to the relevant API call and the user defined payload and requests
     the data/server test from Qualys SSL Labs.
