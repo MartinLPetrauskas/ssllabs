@@ -15,22 +15,4 @@ API v3 docs can be found at https://github.com/ssllabs/ssllabs-scan/blob/master/
 
 Download module and navigate inside ssllabs folder.
 
-Then:
-
-import ssllabsscanner
-
-For results from cache:
-
-data = ssllabsscanner.resultsFromCache("www.qualys.com")
-
-data now contains a JSON object that can be parsed for your needs.
-
-Parse the object to determine your grade:
-
-print(data['endpoints'][0]['grade'])
-
-For retrieving the data from a new scan:
-
-data = ssllabsscanner.newScan("www.qualys.com")
-
-data now contains a JSON object that can be parsed for your needs.
+See example.py for specific usage of functions.
