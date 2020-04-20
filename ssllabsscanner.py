@@ -47,6 +47,19 @@ def resultsFromCache(host, publish='off', startNew='off', fromCache='on', all='d
                 'all': all
               }
     data = requestAPI(path, payload)
+
+    # There is no need to poll for the results right away since it takes 60+ seconds to get them
+    time.sleep(10)
+
+    # A variety of errors can appear while making API requests.
+    # Fail-safe option is to return if any errors appear and let the invoking program deal with them
+    if 'errors' in data.keys():
+        return data
+
+    while data['status'] != 'READY' and data['status'] != 'ERROR':
+        time.sleep(30)
+        data = requestAPI(path, payload)
+
     return data
 
 
