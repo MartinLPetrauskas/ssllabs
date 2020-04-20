@@ -76,6 +76,11 @@ def newScan(host, publish='off', startNew='on', all='done', ignoreMismatch='on')
     # There is no need to poll for the results right away since it takes 60+ seconds to get them
     time.sleep(10)
 
+    # A variety of errors can appear while making API requests.
+    # Fail-safe option is to return if any errors appear and let the invoking program deal with them
+    if 'errors' in results.keys():
+        return results
+
     while results['status'] != 'READY' and results['status'] != 'ERROR':
         time.sleep(30)
         results = requestAPI(path, payload)
