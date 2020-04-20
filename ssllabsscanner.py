@@ -73,6 +73,9 @@ def newScan(host, publish='off', startNew='on', all='done', ignoreMismatch='on')
 
     payload.pop('startNew')
 
+    # There is no need to poll for the results right away since it takes 60+ seconds to get them
+    time.sleep(10)
+
     while results['status'] != 'READY' and results['status'] != 'ERROR':
         time.sleep(30)
         results = requestAPI(path, payload)
