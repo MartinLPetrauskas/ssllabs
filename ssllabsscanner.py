@@ -28,6 +28,43 @@ def requestAPI(path, payload=None):
     return data
 
 
+def scan(host, fromCache):
+    """
+    This function will begin an assessment and return the results
+    @param host: hostname which will be analyzed
+    @param fromCache: determines if the API will retrieve cached assessment reports
+    @return: JSON object with API results
+    """
+    path = 'analyze'
+    payload = {
+        'host': host,
+        'all': 'done',
+        'ignoreMismatch': 'on',
+    }
+    if fromCache:
+        payload.update({'fromCache': 'on', 'maxAge': 24})
+    else:
+        payload.update({'startNew': 'on'})
+    results = requestAPI(path, payload)
+
+    if not fromCache:
+        payload.pop('startNew')
+
+    # There is no need to poll for the results right away since it takes 60+ seconds to get them
+    time.sleep(10)
+
+    # A variety of errors can appear while making API requests.
+    # Fail-safe option is to return if any errors appear and let the invoking program deal with them
+    if 'errors' in results.keys():
+        return results
+
+    while results['status'] != 'READY' and results['status'] != 'ERROR':
+        time.sleep(30)
+        results = requestAPI(path, payload)
+
+    return results
+
+
 def resultsFromCache(host, publish='off', startNew='off', fromCache='on', all='done'):
     """
     This function will return cached assessment reports if they are available
